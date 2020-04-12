@@ -62,10 +62,12 @@ app.post('/input',(req,res,next)=>{
 
   const response = {
     maskedWord : game_value.maskedWord,
-    completed: game_const.secret===game_value.maskedWord || game_value.tries >= game_const.allowdAttempts,
+    completed: game_const.secret === game_value.maskedWord || game_value.tries >= game_const.allowdAttempts,
     passed: game_const.secret === game_value.maskedWord,
     remaining : game_const.allowdAttempts - game_value.tries
   }
+  if(response.completed && !response.passed)
+    response.maskedWord = game_const.secret
 
 
   res.json(response)

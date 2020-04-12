@@ -26,11 +26,10 @@
         if(gameData.maskedWord.length === 0){
           score = "Please start the game"
         }else if(gameData.completed){
-          score = 'Game comepleted. '
           if(gameData.passed){
-            score+='Congrats, You won.'
+            score+='Congrats, You won!!!! . The word was <b>'+gameData.maskedWord+'</b>'
           }else{
-            score+= ' You lost'
+            score+= ' You lost. The word was <b>'+gameData.maskedWord+'</b>'
           }
         }else{
           score = " Hint is <b>"+ gameData.maskedWord +'</b> and tries left is '+ gameData.remaining
