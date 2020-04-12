@@ -1,6 +1,69 @@
-<h1>Nandu</h1>
+<html>
+  <head>
+    <title> My Handman Game</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+       let gameData = {
+        "maskedWord": "",
+        "completed": true,
+        "passed": false,
+        "remaining": 10
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="createNewGame()">New Game</button>
 
-<form action="submit" method="post">
-  Enter your name <input name="name"/ >
-  <input type="submit" />
-</form>
+    <div>
+        Input : <input name="c" onkeyup="inputKey(this)" />
+    </div>
+    <div id="score">
+
+    </div>
+    <script>
+      function setScore(){
+        let score = ''
+        if(gameData.maskedWord.length === 0){
+          score = "Please start the game"
+        }else if(gameData.completed){
+          score = 'Game comepleted. '
+          if(gameData.passed){
+            score+='Congrats, You won.'
+          }else{
+            score+= ' You lost'
+          }
+        }else{
+          score = " Hint is <b>"+ gameData.maskedWord +'</b> and tries left is '+ gameData.remaining
+        }
+        document.getElementById('score').innerHTML = score
+      }
+
+
+      setScore()
+
+      function createNewGame(){
+        axios.get('/new_game')
+          .then(({data})=>{
+            gameData = data
+            setScore();
+          })
+          .catch((err)=>{
+            console.log({err})
+            alert('Something Went Wrong')
+          })
+      }
+
+      function inputKey(e){
+        if(e.value.length){
+          axios.post('/input',{char:e.value})
+          .then(({data})=>{
+            gameData = data
+            setScore();
+          })
+        }
+        e.value=""
+      }
+      
+    </script>
+  </body>
+</html>

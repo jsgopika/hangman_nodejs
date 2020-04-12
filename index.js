@@ -35,9 +35,10 @@ function start_game(){
 app.get('/new_game',(req,res,next)=>{
   start_game()
   const response = {
-    status:true,
-    game_value,
-    maxTries:game_const.allowdAttempts,
+      maskedWord : game_value.maskedWord,
+      completed: game_const.secret===game_value.maskedWord || game_value.tries >= game_const.allowdAttempts,
+      passed: game_const.secret === game_value.maskedWord,
+      remaining : game_const.allowdAttempts - game_value.tries
   }
   res.json(response)
 })
@@ -66,9 +67,8 @@ app.post('/input',(req,res,next)=>{
     remaining : game_const.allowdAttempts - game_value.tries
   }
 
-  
 
-  res.json({status:true,response})
+  res.json(response)
 })
 
 
